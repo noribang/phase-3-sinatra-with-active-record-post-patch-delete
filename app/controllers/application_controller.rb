@@ -1,3 +1,5 @@
+require 'pry'
+
 class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
 
@@ -16,7 +18,7 @@ class ApplicationController < Sinatra::Base
     })
   end
 
-  # delete
+  # delete - destroy
   delete '/reviews/:id' do
     # find the review using the ID
     review = Review.find(params[:id])
@@ -26,4 +28,30 @@ class ApplicationController < Sinatra::Base
     review.to_json
   end
 
+  # post - create
+  post '/reviews' do
+    # binding.pry
+    review = Review.create(
+      score: params[:score],
+      comment: params[:comment],
+      game_id: params[:game_id],
+      user_id: params[:user_id]
+    )
+    review.to_json
+  end
+
+  # patch - update
+  patch '/reviews/:id' do
+    # find it
+    review = Review.find(params[:id])
+    # update review from params data in 
+    # the body of the request
+    review = Review.create(
+      score: params[:score],
+      comment: params[:comment]
+    )
+    # send response
+    review.to_json
+
+  end
 end
